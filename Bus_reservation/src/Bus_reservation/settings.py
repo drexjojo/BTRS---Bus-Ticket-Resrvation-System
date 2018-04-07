@@ -62,8 +62,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-                 
-                 '/home/drex/Documents/Spring2018/Software/Bus-Reservation-System-master/Bus_reservation/src/templates',
+                '/home/aditya/SE/BTRS---Bus-Ticket-Resrvation-System/Bus_reservation/src/templates' 
                  ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -88,7 +87,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bus_reservation',
         'USER' : 'root',
-        'PASSWORD':'hapakaladonut1#',
+        'PASSWORD':'',
     }
 }
 

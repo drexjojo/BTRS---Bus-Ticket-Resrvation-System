@@ -4,7 +4,7 @@ from django.core import urlresolvers
 from django.http.response import HttpResponseRedirect
 from django.template.context import RequestContext
 from bookTicket.models import bookAticket
-from bus.models import BusInfo,BusPickArea,BusDropArea
+from bus.models import Bus,Stop
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -24,7 +24,7 @@ def register(request,tempate_name="registration/register.html"):
                     return HttpResponseRedirect(url)
     else:
         form=UserCreationForm()
-    
+
     page_title = 'Registration'
     return render(request,tempate_name,locals())
 
@@ -40,7 +40,7 @@ def ticket_details(request,ticket_id,template_name="registration/ticketdetails.h
     page_title = 'Ticket details'
     tickets = get_object_or_404(bookAticket,id=ticket_id)
     bus_info = get_object_or_404(BusInfo,id=tickets.bus_id)
-    bus_arrive = get_object_or_404(BusDropArea,id=bus_info.depature_at_id)
-    bus_depart = get_object_or_404(BusPickArea,id=bus_info.arriving_from_id)
+    bus_arrive = get_object_or_404(Stop,id=bus_info.depature_at_id)
+    bus_depart = get_object_or_404(Stop,id=bus_info.arriving_from_id)
     name = request.user.username
     return render(request,template_name, locals())

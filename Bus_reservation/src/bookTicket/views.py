@@ -2,14 +2,14 @@ from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.core import urlresolvers
-from bus.models import BusInfo
+from bus.models import Bus
 from .models import bookAticket
 
 # Create your views here.
 @login_required
 def book_ticket(request,bus_id,template_name='bus/book_ticket_form.html'):
     page_title = 'Book a ticket'
-    bus_info = get_object_or_404(BusInfo,id=bus_id)
+    bus_info = get_object_or_404(Bus,id=bus_id)
     #get all post data in postdata variable
     postdata=request.POST.copy()
     if request.method == 'POST':
@@ -28,7 +28,6 @@ def book_ticket(request,bus_id,template_name='bus/book_ticket_form.html'):
             #save details in the table
             bookTicket.save()
             receipt_url = urlresolvers.reverse('account:my_account')
-            return HttpResponseRedirect(receipt_url) 
+            return HttpResponseRedirect(receipt_url)
 
     return render(request,template_name, locals())
-    
