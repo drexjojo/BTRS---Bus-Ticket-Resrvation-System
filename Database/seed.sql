@@ -38,18 +38,18 @@ INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `userna
 
 
 
-INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`, `action_flag`, `change_message`, `content_type_id`, `user_id`) VALUES
-(1, '2016-03-11 19:25:34.088611', '1', 'Borivali(east)', 1, 'Added.', 7, 1),
-(2, '2016-03-11 19:25:41.478034', '2', 'Vasai', 1, 'Added.', 7, 1),
-(3, '2016-03-11 19:26:45.637704', '1', 'Karjat', 1, 'Added.', 8, 1),
-(4, '2016-03-11 19:27:06.091873', '2', 'Swargate(pune)', 1, 'Added.', 8, 1),
-(5, '2016-03-11 19:35:51.436921', '1', 'Niki Bus', 1, 'Added.', 9, 1),
-(6, '2016-03-14 17:07:01.451745', '2', 'Jyoti travels', 1, 'Added.', 9, 1),
-(7, '2016-03-14 18:01:06.892988', '2', 'Jyoti travels', 2, 'Changed depature_time.', 9, 1),
-(8, '2016-03-14 18:18:25.895609', '1', 'Niki Bus Travels', 2, 'Changed bus_name.', 9, 1),
-(9, '2016-03-19 15:57:29.133909', '2', 'BUSBK#002', 2, 'Changed status.', 10, 1),
-(10, '2016-03-19 20:48:40.101574', '2', 'andy', 2, 'Changed password.', 4, 1),
-(11, '2016-03-20 16:25:48.180197', '4', 'BUSBK#004', 2, 'Changed status.', 10, 1);
+-- INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`, `action_flag`, `change_message`, `content_type_id`, `user_id`) VALUES
+-- (1, '2016-03-11 19:25:34.088611', '1', 'Borivali(east)', 1, 'Added.', 7, 1),
+-- (2, '2016-03-11 19:25:41.478034', '2', 'Vasai', 1, 'Added.', 7, 1),
+-- (3, '2016-03-11 19:26:45.637704', '1', 'Karjat', 1, 'Added.', 8, 1),
+-- (4, '2016-03-11 19:27:06.091873', '2', 'Swargate(pune)', 1, 'Added.', 8, 1),
+-- (5, '2016-03-11 19:35:51.436921', '1', 'Niki Bus', 1, 'Added.', 9, 1),
+-- (6, '2016-03-14 17:07:01.451745', '2', 'Jyoti travels', 1, 'Added.', 9, 1),
+-- (7, '2016-03-14 18:01:06.892988', '2', 'Jyoti travels', 2, 'Changed depature_time.', 9, 1),
+-- (8, '2016-03-14 18:18:25.895609', '1', 'Niki Bus Travels', 2, 'Changed bus_name.', 9, 1),
+-- (9, '2016-03-19 15:57:29.133909', '2', 'BUSBK#002', 2, 'Changed status.', 10, 1),
+-- (10, '2016-03-19 20:48:40.101574', '2', 'andy', 2, 'Changed password.', 4, 1),
+-- (11, '2016-03-20 16:25:48.180197', '4', 'BUSBK#004', 2, 'Changed status.', 10, 1);
 
 INSERT INTO `Route` (`id`, `route_name`, `slug`,`is_available`, `created_at`, `updated_at`) VALUES
 (1,'Gachibowli','Gachibowli','1', '2016-03-11 19:25:33.957604', '2016-03-11 19:25:33.957604'),
@@ -59,17 +59,19 @@ INSERT INTO `Route` (`id`, `route_name`, `slug`,`is_available`, `created_at`, `u
 INSERT INTO `Stop` (`id`, `area_name`, `slug`, `created_at`, `updated_at`,`route_id`) VALUES
 (1, 'A', 'A', '2016-03-11 19:25:33.957604', '2016-03-11 19:25:33.957604','1'),
 (2, 'B', 'B', '2016-03-11 19:25:41.455032', '2016-03-11 19:25:41.455032','1'),
-(11, 'B', 'Bb', '2016-03-11 19:25:41.455032', '2016-03-11 19:25:41.455032','2'),
 (3, 'C', 'C', '2016-03-11 14:26:45.624703', '2016-03-11 19:26:45.624703','1'),
-(12, 'C', 'Cc', '2016-03-11 14:26:45.624703', '2016-03-11 19:26:45.624703','2'),
 (4, 'D', 'D', '2016-03-11 19:27:06.075873', '2016-03-11 19:27:06.075873','1'),
-(13, 'D', 'Dd', '2016-03-11 19:27:06.075873', '2016-03-11 19:27:06.075873','3'),
-(5, 'E', 'E', '2016-03-11 14:27:06.075873', '2016-03-11 19:27:06.075873','3'),
 (6, 'F', 'F', '2016-03-11 13:27:06.075873', '2016-03-11 19:27:06.075873','1'),
 (7, 'G', 'G', '2016-03-11 11:37:06.075873', '2016-03-11 19:27:06.075873','1'),
-(8, 'H', 'H', '2016-03-11 19:25:06.075873', '2016-03-11 19:27:06.075873','3'),
+
 (9, 'I', 'I', '2016-03-11 19:37:06.075873', '2016-03-11 19:27:06.075873','2'),
 (10, 'J', 'J', '2016-03-11 19:21:06.075873', '2016-03-11 19:27:06.075873','2'),
+(11, 'B', 'Bb', '2016-03-11 19:25:41.455032', '2016-03-11 19:25:41.455032','2'),
+(12, 'C', 'Cc', '2016-03-11 14:26:45.624703', '2016-03-11 19:26:45.624703','2'),
+
+(5, 'E', 'E', '2016-03-11 14:27:06.075873', '2016-03-11 19:27:06.075873','3'),
+(8, 'H', 'H', '2016-03-11 19:25:06.075873', '2016-03-11 19:27:06.075873','3'),
+(13, 'D', 'Dd', '2016-03-11 19:27:06.075873', '2016-03-11 19:27:06.075873','3'),
 (14, 'J', 'Jj', '2016-03-11 19:21:06.075873', '2016-03-11 19:27:06.075873','3');
 
 
@@ -80,9 +82,21 @@ INSERT INTO `Stop` (`id`, `area_name`, `slug`, `created_at`, `updated_at`,`route
 -- (1, 'Karjat', 'karjat', '2016-03-11 19:26:45.624703', '2016-03-11 19:26:45.624703'),
 -- (2, 'Swargate(pune)', 'swargatepune', '2016-03-11 19:27:06.075873', '2016-03-11 19:27:06.075873');
 
-INSERT INTO `busrv_busInfo` (`id`, `bus_name`, `slug`, `bus_description`, `type`, `arriving_time`, `depature_time`, `fare`, `no_of_seats`, `is_active`, `created_at`, `updated_at`, `image`, `arriving_from_id`, `depature_at_id`) VALUES
-(1, 'Niki Bus Travels', 'niki-bus', 'With online reservation we provide advance booking facilities in our hotels. The hospitality and versatility that we showcase in all our functional areas has made us one of the leading tours & travels companies in India. Every year, we serve millions of travelers. Smiles on their faces are the greatest reward we have ever got.', 'AC', '06:00:00.000000', '18:00:00.000000', '300.00', 43, 1, '2016-03-11 19:35:51.355917', '2016-03-14 18:18:25.710599', 'images/bus/main/volvo1.jpg', 1, 2),
-(2, 'Jyoti travels', 'jyoti-travels', 'A Destination for the New Millennium.\r\nA different light.\r\nA new point of view.\r\nA signature of excellence.\r\nA tradition of excellence.', 'AC', '06:00:00.000000', '12:00:00.000000', '500.00', 50, 1, '2016-03-14 17:07:00.968717', '2016-03-14 18:01:06.644974', 'images/bus/main/1662227372_v1.jpg', 1, 2);
+INSERT INTO `Bus` (`id`, `bus_number`, `slug`, `type`, `arriving_time`, `depature_time`, `fare`, `no_of_seats`, `is_active`, `created_at`, `updated_at`, `image`, `arriving_from_id`, `depature_at_id`) VALUES
+(1, 1, 'niki-bus', 'AC', '06:00:00.000000', '18:00:00.000000', '300.00', 43, 1, '2016-03-11 19:35:51.355917', '2016-03-14 18:18:25.710599', 'images/bus/main/volvo1.jpg', 1, 2),
+(2, 1, 'niki-bus1', 'AC', '06:00:00.000000', '18:00:00.000000', '300.00', 43, 1, '2016-03-11 19:35:51.355917', '2016-03-14 18:18:25.710599', 'images/bus/main/volvo1.jpg', 2, 3),
+(3, 1, 'niki-bus2', 'AC', '06:00:00.000000', '18:00:00.000000', '300.00', 43, 1, '2016-03-11 19:35:51.355917', '2016-03-14 18:18:25.710599', 'images/bus/main/volvo1.jpg', 3,4),
+(4, 1, 'niki-bus3', 'AC', '06:00:00.000000', '18:00:00.000000', '300.00', 43, 1, '2016-03-11 19:35:51.355917', '2016-03-14 18:18:25.710599', 'images/bus/main/volvo1.jpg', 4, 6),
+(5, 1, 'niki-bus4', 'AC', '06:00:00.000000', '18:00:00.000000', '300.00', 43, 1, '2016-03-11 19:35:51.355917', '2016-03-14 18:18:25.710599', 'images/bus/main/volvo1.jpg', 6, 7),
+
+(6, 2, 'jyoti-travels', 'AC', '06:00:00.000000', '12:00:00.000000', '500.00', 50, 1, '2016-03-14 17:07:00.968717', '2016-03-14 18:01:06.644974', 'images/bus/main/1662227372_v1.jpg', 11, 12),
+(7, 2, 'jyoti-travels1', 'AC', '06:00:00.000000', '12:00:00.000000', '500.00', 50, 1, '2016-03-14 17:07:00.968717', '2016-03-14 18:01:06.644974', 'images/bus/main/1662227372_v1.jpg', 12, 10),
+(8, 2, 'jyoti-travels2', 'AC', '06:00:00.000000', '12:00:00.000000', '500.00', 50, 1, '2016-03-14 17:07:00.968717', '2016-03-14 18:01:06.644974', 'images/bus/main/1662227372_v1.jpg', 10, 9),
+
+(9, 3, 'allen-travels3', 'NAC', '06:00:00.000000', '12:00:00.000000', '500.00', 50, 1, '2016-03-14 17:07:00.968717', '2016-03-14 18:01:06.644974', 'images/bus/main/1662227372_v1.jpg', 5, 13),
+(10, 3, 'allen-travels4', 'NAC', '06:00:00.000000', '12:00:00.000000', '500.00', 50, 1, '2016-03-14 17:07:00.968717', '2016-03-14 18:01:06.644974', 'images/bus/main/1662227372_v1.jpg', 13, 8),
+(11, 3, 'allen-travels5', 'NAC', '06:00:00.000000', '12:00:00.000000', '500.00', 50, 1, '2016-03-14 17:07:00.968717', '2016-03-14 18:01:06.644974', 'images/bus/main/1662227372_v1.jpg', 8, 14);
+
 
 
 INSERT INTO `bookTicket_bookaticket` (`id`, `booking_date`, `status`, `ip_address`, `last_updated`, `date`, `email`, `phone`, `booking_seats_num`, `fare`, `bus_id`, `user_id`) VALUES

@@ -59,7 +59,7 @@ class Bus(models.Model):
     BUS_TYPES = ((AC,'AC Bus'),
                       (NON_AC,'Non AC bus'),)
 
-    bus_number = models.CharField(max_length=50)
+    bus_number = models.IntegerField(default=50)
     slug = models.SlugField(max_length=255,unique=True)
     # bus_description = models.TextField()
     type = models.CharField(choices=BUS_TYPES,default=AC,max_length=10)

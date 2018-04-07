@@ -10,7 +10,6 @@ class BusAdmin(admin.ModelAdmin):
     ordering = ['bus_number']
     search_fields = ['bus_number', 'arriving_from', 'depature_at']
     exclude = ('created_at', 'updated_at',)
-
     # sets up slug to be generated from category name
     prepopulated_fields = {'slug' : ('bus_number',)}
 
