@@ -120,7 +120,11 @@ def search_bus(request,template_name ='bus/search_bus.html'):
         # print unique_paths
 
 
-    return render(request,template_name, locals())
+    return render(request,
+        template_name,
+        locals(),
+        "global" : global_path,
+        )
 
 
 def autocomplete_pick(request):
