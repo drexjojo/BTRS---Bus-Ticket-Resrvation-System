@@ -119,10 +119,22 @@ def search_bus(request,template_name ='bus/search_bus.html'):
             print "new_path"
             funk(path)
         print_all_paths()
-        local_path = global_path
+        # local_path = global_path
         # global_path *= 0
         # print unique_paths
-
+        final_global_path = []
+        # final_global_path = global_path
+        for path in global_path:
+            temp_path = []
+            st = 0
+            for ptr in range(len(path)-1):
+                if path[ptr].bus_number != path[ptr+1].bus_number:
+                    path[st].arriving_time = path[ptr].arriving_time
+                    path[st].depature_at_id = path[ptr].depature_at_id
+                    path[st].fare += path[ptr].fare
+                    temp_path.append(path[st])
+                    st = ptr+1
+            final_global_path.append(temp_path)
 
     return render(request,
         template_name,
