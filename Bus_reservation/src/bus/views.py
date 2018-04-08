@@ -24,23 +24,54 @@ def search_route(route_dict,start,end,path=[]) :
     return paths
 
 # def get_all_routes(area_from_id,area_to_id):
+global_path = []
+def recurse(edge_list,active_bus,path_length,path = []):
+    if active_bus != -1:
+        path = path + [active_bus.slug]
+    if len(path) == path_length:
+        global_path.append(path)
+        print path
+        return
+    for edge in edge_list:
+        if active_bus == edge[0]:
+            if len(path) < path_length:
+                recurse(edge_list,edge[1],path_length,path)
+
+def create_edge_list(active_buses):
+    edge_list = []
+    for i in range(1,len(active_buses)):
+        start = active_buses[i]
+        end = active_buses[i+1]
+        for st in start:
+            for en in end:
+                if st.arriving_time <= en.depature_time:
+                    edge_list.append((st,en))
+    for bus in active_buses[1]:
+        edge_list.append((-1,bus))
+    recurse(edge_list,-1,len(active_buses))
+    # print edge_list
+
 def func(path):
-    last_departure_time = datetime.time(1, 1, 10)
+    # last_departure_time = datetime.time(1, 1, 10)
     count = 1
+    active_buses = {}
     for stop_no in range(len(path)-1):
         start_stop_nos = Stop.objects.filter(area_name = path[stop_no])
         end_stop_nos = Stop.objects.filter(area_name = path[stop_no+1])
-
+        active_buses[count] = []
         for i in start_stop_nos:
             for j in end_stop_nos:
                 bus_info_list = Bus.objects.filter(arriving_from_id=i,depature_at_id=j)
                 for k in bus_info_list:
-                    if k.arriving_time >= last_departure_time :
-                        print "from ",i, " at ",k.depature_time," to ",j," by ",k.arriving_time
-                        print str(k.slug)
-                        print "price",k.fare
-                        last_departure_time = k.depature_time
-
+                    active_buses[count].append(k)
+                    # if k.arriving_time >= last_departure_time :
+                    #     print "from ",i, " at ",k.depature_time," to ",j," by ",k.arriving_time
+                    #     print str(k.slug)
+                    #     print "price",k.fare
+                    #     last_departure_time = k.depature_time
+        count += 1
+    # print active_buses
+    create_edge_list(active_buses)
 
 def search_bus(request,template_name ='bus/search_bus.html'):
     all_routes = {}
