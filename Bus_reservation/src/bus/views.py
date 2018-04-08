@@ -8,6 +8,20 @@ def index (request, template_name ='bus_resrv_system.html'):
     page_title = 'Bus'
     return render(request,template_name, locals())
 
+def search_route(route_dict,start,end,path=[]) :
+    path = path + [start]
+    if start == end:
+        return [path]
+    if not route_dict.has_key(start):
+        return []
+    paths = []
+    for node in route_dict[start]:
+        if node not in path:
+            newpaths = search_route(route_dict, node, end, path)
+            for newpath in newpaths:
+                paths.append(newpath)
+    return paths
+
 # def get_all_routes(area_from_id,area_to_id):
 def search_bus(request,template_name ='bus/search_bus.html'):
     all_routes = {}
@@ -17,8 +31,10 @@ def search_bus(request,template_name ='bus/search_bus.html'):
         post_data = request.POST.copy()
         area_from_id = post_data.get('area_from_id')
         area_to_id = post_data.get('area_to_id')
-        # total_routes = get_all_routes(area_from_id,area_to_id)
-        # for route in total_routes:
+        start_area = Stop.objects.filter(id = area_from_id)
+        start_area_name = str(start_area[0].area_name)
+        stop_area = Stop.objects.filter(id = area_to_id)
+        stop_area_name = str(stop_area[0].area_name)
         route_dict = {}
         bus_info_list = Bus.objects.filter(arriving_from_id=area_from_id,depature_at_id=area_to_id)
         all_busses = Bus.objects.all()
@@ -30,11 +46,9 @@ def search_bus(request,template_name ='bus/search_bus.html'):
             else :
                 route_dict[arriving_from[0].area_name] = [str(departing_at[0].area_name)]
 
-        for key,value in route_dict.items() :
-            route_dict[key] = set(value)
-
-        for key,value in route_dict.items() :
-            print key , " ",value,"\n"
+        paths = search_route(route_dict,start_area_name,stop_area_name)
+        unique_paths = [list(x) for x in set(tuple(x) for x in paths)]
+        print unique_paths
 
 
     return render(request,template_name, locals())
