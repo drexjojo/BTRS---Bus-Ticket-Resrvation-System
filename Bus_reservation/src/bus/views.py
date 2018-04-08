@@ -144,11 +144,13 @@ def search_bus(request,template_name ='bus/search_bus.html'):
         for path in temp_global_path :
             temp_path = []
             temp_row = copy.copy(path[0])
+            temp_row.fare = 0
             for i in path :
                 # print i.bus_number
                 if i.bus_number == temp_row.bus_number :
                     temp_row.arriving_time = copy.copy(i.arriving_time)
                     temp_row.depature_at_id = copy.copy(i.depature_at_id)
+                    temp_row.fare += i.fare
                 else :
                     temp_path.append(temp_row)
                     temp_row = copy.copy(i)
