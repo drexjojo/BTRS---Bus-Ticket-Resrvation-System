@@ -30,8 +30,11 @@
 									 </div>
 								</form>
 						 	 </div>
-						 <div>
-						 {%if bus_info_list %}
+						 <div><br><br><br><br><br>
+               {%if local_path %}
+               {%for path in local_path%}
+               <br><p>ROUTE OPTION                   </p>
+               {%for bus_info in path %}
 						  <table class="table">
 								   <thead>
 								      <tr>
@@ -41,11 +44,11 @@
 								        <td>Fare</td>
 								        <td>Timings</td>
 								        <td>Description</td>
-								        <td></td>
+								        <td>Start from</td>
+                        <td>End At</td>
 								      </tr>
 								    </thead>
 								    <tbody>
-								     {%for bus_info in bus_info_list %}
 								     <tr bgcolor="#FFFFFF" style="color:black">
 								    	<td><a href="#" data-toggle="modal" data-target="#myModal{{bus_info.id}}"><img src="{% static ''%}{{bus_info.image}}" width=70 /></a>
 								    			<!-- Modal -->
@@ -98,12 +101,29 @@
 													    </div>
 													  </div>
 								        </td>
-								         <td><a href="{% url 'bookTicket:bookTicket' bus_id=bus_info.id %}" class="btn btn-success">Book Now</a></td>
-								      </tr>
-									{%endfor%}
+                        <!-- {% with bus_info.arriving_from_id as id %} -->
+                        <td>{% for key, value in stop_map.items %}
+                            {% if bus_info.arriving_from_id == key %}
+                                {{ value }}
+                            {% endif %}
+                        {% endfor %}
+                        </td>
+                        <td>{% for key, value in stop_map.items %}
+                            {% if bus_info.depature_at_id == key %}
+                                {{ value }}
+                            {% endif %}
+                        {% endfor %}
+                        </td>
 
-								    </tbody>
+                        <!-- {%endwith%} -->
+								         <!-- <td><a href="{% url 'bookTicket:bookTicket' bus_id=bus_info.id %}" class="btn btn-success">Book Now</a></td> -->
+                         <!-- <p> TEST 1</p> -->
+								      </tr>
+                </tbody>
+
 								  </table>
+                  {% endfor %}
+                  {%endfor%}
 
 						 {%endif%}
 						 </div>

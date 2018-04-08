@@ -38,7 +38,7 @@ def recurse(edge_list,active_bus,path_length,path = []):
                 recurse(edge_list,edge[1],path_length,path)
 
 def print_all_paths():
-    print len(global_path)
+    # print len(global_path)
     for path in global_path:
         for i in range(len(path)):
                 start_stop = Stop.objects.filter(id = path[i].arriving_from_id)
@@ -90,6 +90,7 @@ def funk(path):
 def search_bus(request,template_name ='bus/search_bus.html'):
     all_routes = {}
     page_title = 'Book a ticket'
+    stop_map = {}
 
     if request.method == 'POST':
         del global_path[:]
@@ -106,6 +107,8 @@ def search_bus(request,template_name ='bus/search_bus.html'):
         for bus in all_busses :
             arriving_from = Stop.objects.filter(id = int(bus.arriving_from_id))
             departing_at = Stop.objects.filter(id = int(bus.depature_at_id))
+            stop_map[int(bus.arriving_from_id)] = arriving_from[0].area_name
+            stop_map[int(bus.depature_at_id)] = departing_at[0].area_name
             if arriving_from[0].area_name in route_dict :
                 route_dict[arriving_from[0].area_name].append(str(departing_at[0].area_name))
             else :
@@ -116,15 +119,15 @@ def search_bus(request,template_name ='bus/search_bus.html'):
             print "new_path"
             funk(path)
         print_all_paths()
+        local_path = global_path
         # global_path *= 0
         # print unique_paths
 
 
     return render(request,
         template_name,
-        locals(),
-        "global" : global_path,
-        )
+        locals())
+        # {global_path})
 
 
 def autocomplete_pick(request):
