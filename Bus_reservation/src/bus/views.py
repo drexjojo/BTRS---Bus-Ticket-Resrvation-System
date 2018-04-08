@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import Bus,Stop
 import json
 import datetime
+import copy
 
 
 def index (request, template_name ='bus_resrv_system.html'):
@@ -122,19 +123,50 @@ def search_bus(request,template_name ='bus/search_bus.html'):
         # local_path = global_path
         # global_path *= 0
         # print unique_paths
-        final_global_path = []
         # final_global_path = global_path
-        for path in global_path:
+        
+        # for path in global_path:
+        #     temp_path = []
+        #     st = 0
+        #     for ptr in range(len(path)-1):
+        #         if path[ptr].bus_number != path[ptr+1].bus_number:
+        #             path[st].arriving_time = path[ptr].arriving_time
+        #             path[st].depature_at_id = path[ptr].depature_at_id
+        #             path[st].fare += path[ptr].fare
+        #             temp_path.append(path[st])
+        #             st = ptr+1
+        #     final_global_path.append(temp_path)
+
+        final_global_path = []
+        temp_global_path = copy.copy(global_path)
+        # final_global_path = []
+
+        for path in temp_global_path :
             temp_path = []
-            st = 0
-            for ptr in range(len(path)-1):
-                if path[ptr].bus_number != path[ptr+1].bus_number:
-                    path[st].arriving_time = path[ptr].arriving_time
-                    path[st].depature_at_id = path[ptr].depature_at_id
-                    path[st].fare += path[ptr].fare
-                    temp_path.append(path[st])
-                    st = ptr+1
+            temp_row = copy.copy(path[0])
+            for i in path :
+                # print i.bus_number
+                if i.bus_number == temp_row.bus_number :
+                    temp_row.arriving_time = copy.copy(i.arriving_time)
+                    temp_row.depature_at_id = copy.copy(i.depature_at_id)
+                else :
+                    temp_path.append(temp_row)
+                    temp_row = copy.copy(i)
+            temp_path.append(temp_row)
             final_global_path.append(temp_path)
+            # for j in temp_path:
+            #     print "from ", j.arriving_from_id
+            #     print "a time ", j.depature_time
+            #     print "to ", j.depature_at_id
+            #     print "d time ", j.arriving_time
+            #     print "bus ", j.bus_number
+            #     print "\n" 
+
+
+            # print "done"
+            # print "\n"
+
+
 
     return render(request,
         template_name,
