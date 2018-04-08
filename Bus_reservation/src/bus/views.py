@@ -27,15 +27,29 @@ def search_route(route_dict,start,end,path=[]) :
 global_path = []
 def recurse(edge_list,active_bus,path_length,path = []):
     if active_bus != -1:
-        path = path + [active_bus.slug]
+        path = path + [active_bus]
     if len(path) == path_length:
         global_path.append(path)
-        print path
+        # print path
         return
     for edge in edge_list:
         if active_bus == edge[0]:
             if len(path) < path_length:
                 recurse(edge_list,edge[1],path_length,path)
+
+def print_all_paths():
+    print len(global_path)
+    for path in global_path:
+        for i in range(len(path)):
+                start_stop = Stop.objects.filter(id = path[i].arriving_from_id)
+                end_stop = Stop.objects.filter(id = path[i].depature_at_id)
+                print "from ",start_stop[0].area_name, " at ",path[i].arriving_time," to "\
+                    ,end_stop[0].area_name," by ",path[i].depature_time,"in ",path[i].slug
+                # print str(k.slug)
+                print "price",path[i].fare
+        print "----------------------------------------------"
+    # global_path[:] = 0
+    # del global_path[:]
 
 def create_edge_list(active_buses):
     edge_list = []
@@ -51,7 +65,7 @@ def create_edge_list(active_buses):
     recurse(edge_list,-1,len(active_buses))
     # print edge_list
 
-def func(path):
+def funk(path):
     # last_departure_time = datetime.time(1, 1, 10)
     count = 1
     active_buses = {}
@@ -78,6 +92,7 @@ def search_bus(request,template_name ='bus/search_bus.html'):
     page_title = 'Book a ticket'
 
     if request.method == 'POST':
+        del global_path[:]
         post_data = request.POST.copy()
         area_from_id = post_data.get('area_from_id')
         area_to_id = post_data.get('area_to_id')
@@ -95,12 +110,13 @@ def search_bus(request,template_name ='bus/search_bus.html'):
                 route_dict[arriving_from[0].area_name].append(str(departing_at[0].area_name))
             else :
                 route_dict[arriving_from[0].area_name] = [str(departing_at[0].area_name)]
-
         paths = search_route(route_dict,start_area_name,stop_area_name)
         unique_paths = [list(x) for x in set(tuple(x) for x in paths)]
         for path in unique_paths:
             print "new_path"
-            func(path)
+            funk(path)
+        print_all_paths()
+        # global_path *= 0
         # print unique_paths
 
 
