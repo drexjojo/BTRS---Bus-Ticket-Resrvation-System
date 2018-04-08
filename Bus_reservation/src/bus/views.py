@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Bus,Stop
 import json
+import datetime
 
 
 def index (request, template_name ='bus_resrv_system.html'):
@@ -24,24 +25,21 @@ def search_route(route_dict,start,end,path=[]) :
 
 # def get_all_routes(area_from_id,area_to_id):
 def func(path):
-    last_departure = -1
-    bus_routes = {}
+    last_departure_time = datetime.time(1, 1, 10)
     count = 1
     for stop_no in range(len(path)-1):
-        start_bus_nos = Stop.objects.filter(area_name = path[stop_no])
-        end_bus_nos = Stop.objects.filter(area_name = path[stop_no+1])
-        bus_routes[count] = []
-        for i in start_bus_nos:
-            for j in end_bus_nos:
+        start_stop_nos = Stop.objects.filter(area_name = path[stop_no])
+        end_stop_nos = Stop.objects.filter(area_name = path[stop_no+1])
+
+        for i in start_stop_nos:
+            for j in end_stop_nos:
                 bus_info_list = Bus.objects.filter(arriving_from_id=i,depature_at_id=j)
                 for k in bus_info_list:
-                    # if k.arriving_from_id > last_departure:
-                    print str(k.slug)
-                    bus_routes[count].append(k.slug)
-                    last_departure = k.depature_at_id
-                    print "GG"
-        count += 1
-    print bus_routes
+                    if k.arriving_time >= last_departure_time :
+                        print "from ",i, " at ",k.depature_time," to ",j," by ",k.arriving_time
+                        print str(k.slug)
+                        print "price",k.fare
+                        last_departure_time = k.depature_time
 
 
 def search_bus(request,template_name ='bus/search_bus.html'):
@@ -69,8 +67,9 @@ def search_bus(request,template_name ='bus/search_bus.html'):
 
         paths = search_route(route_dict,start_area_name,stop_area_name)
         unique_paths = [list(x) for x in set(tuple(x) for x in paths)]
-        # for path in unique_paths:
-        func(unique_paths[0])
+        for path in unique_paths:
+            print "new_path"
+            func(path)
         # print unique_paths
 
 

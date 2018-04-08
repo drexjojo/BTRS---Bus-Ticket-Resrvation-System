@@ -82,7 +82,7 @@ INSERT INTO `Stop` (`id`, `area_name`, `slug`, `created_at`, `updated_at`,`route
 -- (1, 'Karjat', 'karjat', '2016-03-11 19:26:45.624703', '2016-03-11 19:26:45.624703'),
 -- (2, 'Swargate(pune)', 'swargatepune', '2016-03-11 19:27:06.075873', '2016-03-11 19:27:06.075873');
 
-INSERT INTO `Bus` (`id`, `bus_number`, `slug`, `type`, `arriving_time`, `depature_time`, `fare`, `no_of_seats`, `is_active`, `created_at`, `updated_at`, `image`, `arriving_from_id`, `depature_at_id`) VALUES
+INSERT INTO `Bus` (`id`, `bus_number`, `slug`, `type`, `depature_time`, `arriving_time`, `fare`, `no_of_seats`, `is_active`, `created_at`, `updated_at`, `image`, `arriving_from_id`, `depature_at_id`) VALUES
 (1, 1, 'niki-bus', 'AC', '18:00:00.000000', '18:05:00.000000', '300.00', 43, 1, '2016-03-11 19:35:51.355917', '2016-03-14 18:18:25.710599', 'images/bus/main/volvo1.jpg', 1, 2),
 (2, 1, 'niki-bus1', 'AC', '18:05:00.000000', '18:15:00.000000', '300.00', 43, 1, '2016-03-11 19:35:51.355917', '2016-03-14 18:18:25.710599', 'images/bus/main/volvo1.jpg', 2, 3),
 (3, 1, 'niki-bus2', 'AC', '18:15:00.000000', '18:20:00.000000', '300.00', 43, 1, '2016-03-11 19:35:51.355917', '2016-03-14 18:18:25.710599', 'images/bus/main/volvo1.jpg', 3,4),
