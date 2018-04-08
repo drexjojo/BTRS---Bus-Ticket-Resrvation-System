@@ -19,23 +19,24 @@ def search_bus(request,template_name ='bus/search_bus.html'):
         area_to_id = post_data.get('area_to_id')
         # total_routes = get_all_routes(area_from_id,area_to_id)
         # for route in total_routes:
+        route_dict = {}
         bus_info_list = Bus.objects.filter(arriving_from_id=area_from_id,depature_at_id=area_to_id)
-        bus_info = Bus.objects.all()
-        # for bus in bus_info:
-        #     Stop_Arrival = Stop.objects.filter(id=int(bus.arriving_from_id))
-        #     Stop_Departure = Stop.objects.filter(id=int(bus.depature_at_id))
-        #     print "DFGFDGFD" + str(Stop_Arrival)
-        #     if Stop_Arrival.area_name in all_routes.keys():
-        #         all_routes[Stop_Arrival.area_name].append(Stop_Departure.area_name)
-        #     else:
-        #         all_routes[Stop_Arrival.area_name] = []
-        #         all_routes[Stop_Arrival.area_name].append(Stop_Departure.area_name)
+        all_busses = Bus.objects.all()
+        for bus in all_busses :  
+            arriving_from = Stop.objects.filter(id = int(bus.arriving_from_id))
+            departing_at = Stop.objects.filter(id = int(bus.depature_at_id))
+            if arriving_from[0].area_name in route_dict :
+                route_dict[arriving_from[0].area_name].append(str(departing_at[0].area_name))
+            else :
+                route_dict[arriving_from[0].area_name] = [str(departing_at[0].area_name)]
 
-            # all_routes.append([int(bus.arriving_from_id), int(bus.depature_at_id)])
-        # print all_routes
-        # bus_ids = Stop.objects.filter(area_name=area_from_id)
-        # for ids in bus_ids:
-        #     print ids.id
+        for key,value in route_dict.items() :
+            route_dict[key] = set(value)
+
+        for key,value in route_dict.items() :
+            print key , " ",value,"\n"
+
+
     return render(request,template_name, locals())
 
 
