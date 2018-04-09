@@ -15,7 +15,7 @@ class bookAticket(models.Model):
     status = models.CharField(choices=TICKET_STATUSES,default=PENDING,max_length=2)
     ip_address = models.GenericIPAddressField()
     last_updated = models.DateTimeField(auto_now=True)
-    user= models.ForeignKey(User)
+    user = models.ForeignKey(User)
     bus = models.ForeignKey(Bus)
     date=models.DateTimeField(auto_now_add=True)
     #contact Info

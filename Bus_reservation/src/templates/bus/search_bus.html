@@ -33,7 +33,7 @@
 						 <div><br><br><br><br><br>
                {%if final_global_path %}
                {%for path in final_global_path%}
-               <br><p>ROUTE OPTION                   </p>
+               <br><p>ROUTE OPTION</p>
                {%for bus_info in path %}
 						  <table class="table">
 								   <thead>
@@ -116,13 +116,13 @@
                         </td>
 
                         <!-- {%endwith%} -->
-								         <!-- <td><a href="{% url 'bookTicket:bookTicket' bus_id=bus_info.id %}" class="btn btn-success">Book Now</a></td> -->
                          <!-- <p> TEST 1</p> -->
 								      </tr>
                 </tbody>
 
 								  </table>
                   {% endfor %}
+                  <td><a href="{% url 'bookTicket:bookTicket' bus_id=forloop.counter0 %}" class="btn btn-success">Book Now</a></td>
                   {%endfor%}
 
 						 {%endif%}

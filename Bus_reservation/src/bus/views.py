@@ -4,8 +4,8 @@ from .models import Bus,Stop
 import json
 import datetime
 import copy
-
-
+import pickle
+import os.path as pp
 def index (request, template_name ='bus_resrv_system.html'):
     page_title = 'Bus'
     return render(request,template_name, locals())
@@ -124,7 +124,7 @@ def search_bus(request,template_name ='bus/search_bus.html'):
         # global_path *= 0
         # print unique_paths
         # final_global_path = global_path
-        
+
         # for path in global_path:
         #     temp_path = []
         #     st = 0
@@ -162,7 +162,20 @@ def search_bus(request,template_name ='bus/search_bus.html'):
             #     print "to ", j.depature_at_id
             #     print "d time ", j.arriving_time
             #     print "bus ", j.bus_number
-            #     print "\n" 
+            #     print "\n"
+        my_path = pp.abspath(pp.dirname(__file__))
+        pat = pp.join(my_path, "../bookTicket/dat.txt")
+        # f = open(pat,"wb")
+        # pickle.dump(global_path,f)
+        # print "Dump Created"
+        # f.close()
+        with open(pat,"wb") as f:
+            for path in global_path:
+                for stop in path:
+                    f.write(str(stop.id))
+                    f.write(" ")
+                f.write("\n")
+
 
 
             # print "done"

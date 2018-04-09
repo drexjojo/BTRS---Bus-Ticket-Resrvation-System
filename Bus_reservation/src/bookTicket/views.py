@@ -4,30 +4,52 @@ from django.http import HttpResponseRedirect
 from django.core import urlresolvers
 from bus.models import Bus
 from .models import bookAticket
+import pickle
+import os.path as pp
 
 # Create your views here.
 @login_required
 def book_ticket(request,bus_id,template_name='bus/book_ticket_form.html'):
     page_title = 'Book a ticket'
-    bus_info = get_object_or_404(Bus,id=bus_id)
+    # bus_info = get_object_or_404(Bus,id=bus_id)
     #get all post data in postdata variable
+    print "HH"
+    routes = []
+    my_path = pp.abspath(pp.dirname(__file__))
+    pat = pp.join(my_path, "dat.txt")
+    with open(pat,"rb") as f:
+        temp_lis = []
+        for line in f.readlines():
+            temp_lis.append(line.split())
+            temp_lis = []
+            routes.append(temp_lis)
+    print "YAY"
+    for lis in routes:
+        for i in lis:
+            print i
+        print "\n"
     postdata=request.POST.copy()
     if request.method == 'POST':
         if postdata['bookticket'] == 'Book Ticket':
             #create a object for save
-            bookTicket = bookAticket()
-            bookTicket.email=postdata.get('email',0)
-            bookTicket.phone = postdata.get('phone',0)
-            bookTicket.booking_seats_num = postdata.get('noofseats',0)
-            bookTicket.fare = postdata.get('fare_bus',0)
-            if request.user.is_authenticated():
-                bookTicket.user = request.user
-            bookTicket.booking_date = postdata.get('book_date',0)
-            bookTicket.bus_id = bus_id
-            bookTicket.ip_address = request.META.get('REMOTE_ADDR')
-            #save details in the table
-            bookTicket.save()
-            receipt_url = urlresolvers.reverse('account:my_account')
+            for bus_number in routes[int(bus_id)]:
+                for xx in bus_number:
+                    bookTicket = bookAticket()
+                    bookTicket.email=postdata.get('email',0)
+                    bookTicket.phone = postdata.get('phone',0)
+                    bookTicket.booking_seats_num = postdata.get('noofseats',0)
+                    bookTicket.fare = postdata.get('fare_bus',0)
+                    if request.user.is_authenticated():
+                        bookTicket.user = request.user
+                    bookTicket.booking_date = postdata.get('book_date',0)
+                    print bookTicket.email
+                    print bookTicket.fare
+                    bookTicket.bus_id = int(xx)
+                    bookTicket.fare = 3
+                    bookTicket.ip_address = request.META.get('REMOTE_ADDR')
+                    #save details in the table
+                    bookTicket.save()
+                    receipt_url = urlresolvers.reverse('account:my_account')
             return HttpResponseRedirect(receipt_url)
 
     return render(request,template_name, locals())
