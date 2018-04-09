@@ -98,6 +98,11 @@ def search_bus(request,template_name ='bus/search_bus.html'):
         post_data = request.POST.copy()
         area_from_id = post_data.get('area_from_id')
         area_to_id = post_data.get('area_to_id')
+        print area_from_id,area_to_id
+        if area_from_id == '1' and area_to_id == '1':
+            print "dfsfsd"
+            area_from_id = 2
+            area_to_id = 1
         start_area = Stop.objects.filter(id = area_from_id)
         start_area_name = str(start_area[0].area_name)
         stop_area = Stop.objects.filter(id = area_to_id)
@@ -164,11 +169,12 @@ def search_bus(request,template_name ='bus/search_bus.html'):
             #     print "bus ", j.bus_number
             #     print "\n"
         my_path = pp.abspath(pp.dirname(__file__))
+        pat = pp.join(my_path, "../bookTicket/dat.pkl")
+        f = open(pat,"wb")
+        pickle.dump(final_global_path,f)
+        print "Dump Created"
+        f.close()
         pat = pp.join(my_path, "../bookTicket/dat.txt")
-        # f = open(pat,"wb")
-        # pickle.dump(global_path,f)
-        # print "Dump Created"
-        # f.close()
         with open(pat,"wb") as f:
             for path in global_path:
                 for stop in path:
