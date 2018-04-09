@@ -14,12 +14,12 @@
                         <div class="row">
 						  <div class="col-xs-6">
 						  <table class="table table-bordered" >
-						  <tr>
+						 <!--  <tr>
 							  <td>
 							   <img src="{% static ''%}images/bus/main/volvo1.jpg" width=360 />
 							  </td>
-						  </tr>
-						  <tr bgcolor="#FFFFFF" style="color:black">
+						  </tr> -->
+						  <!-- <tr bgcolor="#FFFFFF" style="color:black">
 							  <td>
 							  Fare : &nbsp; Rs {{bus_info.fare|floatformat}}/Per person
 							  </td>
@@ -39,11 +39,11 @@
 							  <td>
 							   {{bus_info.bus_description|slice:":150"}}
 							  </td>
-						  </tr>
+						  </tr> -->
 
 						  </table>
 						</div>
-						  <div class="col-xs-6">
+						  <div class="col-xs-7">
 						  <form method='POST'action=".">
 								{% csrf_token %}
 
@@ -64,7 +64,7 @@
 								  </div>
 								  <div class="row">
 								    <div class="form-group col-xs-9">
-								      	<label for="bookDate">Booking Date</label>
+								      	<label for="bookDate">Journey Date</label>
         								<input class="min-today form-control input-sm" id="min" type="date" name="book_date" placeholder="YYYY-MM-DD" data-date-split-input="true" required/>
 								    </div>
 								  </div>
