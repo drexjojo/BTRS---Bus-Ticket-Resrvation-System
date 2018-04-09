@@ -24,14 +24,14 @@
                         		Departure :
                         		</td>
                         		<td>
-                        		{{bus_arrive.area_name}}<br/><br/>
-                        		{{bus_depart.area_name}}
+                        		{{bus_arrive}}<br/><br/>
+                        		{{bus_depart}}
                         		</td>
                         	</tr>
                         	<tr>
                         		<td>
-                        		Travels : {{bus_info.bus_name}}<br/>
-                        		<small>Rs {{bus_info.fare|floatformat}}/Per person</small>
+                        		Bus Number : {{tickets.bus_number}}<br/>
+                        		<small>Rs {{tickets.fare|floatformat}}/Per person</small>
                         		</td>
 
                         		<td>
@@ -46,9 +46,9 @@
                         	</tr>
                         	<tr>
                         		<td>
-                        		Type :  {{bus_info.type}}<br/>
-                        		Depart: {{bus_info.depature_time}}<br/>
-								Arrive : {{bus_info.arriving_time}}<br/>
+                        		<br/>
+                        		Depart: {{tickets.D_time}}<br/>
+								Arrive : {{tickets.A_time}}<br/>
 								<small>*Your booking id:BUSBK#00{{ tickets.id }}</small>
                         		</td>
                         		<td >

@@ -28,28 +28,40 @@ def book_ticket(request,bus_id,template_name='bus/book_ticket_form.html'):
         for i in lis:
             print i
         print "\n"
+    pat = pp.join(my_path, "dat.pkl")
+    f = open(pat,"rb")
+    final_global_path = pickle.load(f)
+    print "Dump Opened"
+    f.close()
+
     postdata=request.POST.copy()
     if request.method == 'POST':
         if postdata['bookticket'] == 'Book Ticket':
             #create a object for save
-            for bus_number in routes[int(bus_id)]:
-                for xx in bus_number:
-                    bookTicket = bookAticket()
-                    bookTicket.email=postdata.get('email',0)
-                    bookTicket.phone = postdata.get('phone',0)
-                    bookTicket.booking_seats_num = postdata.get('noofseats',0)
-                    bookTicket.fare = postdata.get('fare_bus',0)
-                    if request.user.is_authenticated():
-                        bookTicket.user = request.user
-                    bookTicket.booking_date = postdata.get('book_date',0)
-                    print bookTicket.email
-                    print bookTicket.fare
-                    bookTicket.bus_id = int(xx)
-                    bookTicket.fare = 3
-                    bookTicket.ip_address = request.META.get('REMOTE_ADDR')
-                    #save details in the table
-                    bookTicket.save()
-                    receipt_url = urlresolvers.reverse('account:my_account')
+            for path in final_global_path[int(bus_id)]:
+                # for xx in bus_number:
+                bookTicket = bookAticket()
+                bookTicket.email=postdata.get('email',0)
+                bookTicket.phone = postdata.get('phone',0)
+                bookTicket.booking_seats_num = postdata.get('noofseats',0)
+                bookTicket.fare = postdata.get('fare_bus',0)
+                if request.user.is_authenticated():
+                    bookTicket.user = request.user
+                bookTicket.booking_date = postdata.get('book_date',0)
+                print path.arriving_from
+                print path.depature_at
+                bookTicket.bus_number = path.bus_number
+                bookTicket.A_from = path.arriving_from
+                bookTicket.D_at = path.depature_at
+                bookTicket.A_time = path.arriving_time
+                bookTicket.D_time = path.depature_time
+                # print bookTicket.bus.arriving_from
+                # print bookTicket.bus.depature_at
+                bookTicket.fare = path.fare
+                bookTicket.ip_address = request.META.get('REMOTE_ADDR')
+                #save details in the table
+                bookTicket.save()
+                receipt_url = urlresolvers.reverse('account:my_account')
             return HttpResponseRedirect(receipt_url)
 
     return render(request,template_name, locals())
