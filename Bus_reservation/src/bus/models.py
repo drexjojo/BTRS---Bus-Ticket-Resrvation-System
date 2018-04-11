@@ -77,7 +77,7 @@ class Bus(models.Model):
         db_table='Bus'
         ordering=['-created_at']
     def __str__(self):
-        return self.bus_number
+        return str(self.bus_number)
 #
 # class RouteTable(model.Model):
 #     route_id = models.CharField(max_length=50)
