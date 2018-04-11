@@ -62,7 +62,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-                '/home/aditya/SE/BTRS---Bus-Ticket-Resrvation-System/Bus_reservation/src/templates' 
+                '/home/vatsal/IIIT/Sem4/SE/BTRS---Bus-Ticket-Resrvation-System/Bus_reservation/src/templates' 
                  ],
         'APP_DIRS': True,
         'OPTIONS': {

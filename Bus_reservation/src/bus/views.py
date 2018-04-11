@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Bus,Stop
+from .models import Bus,Bus_trip ,Stop
 import json
 import datetime
 import copy
 import pickle
 import os.path as pp
+
+
 def index (request, template_name ='bus_resrv_system.html'):
     page_title = 'Bus'
     return render(request,template_name, locals())
@@ -22,6 +24,7 @@ def search_route(route_dict,start,end,path=[]) :
             newpaths = search_route(route_dict, node, end, path)
             for newpath in newpaths:
                 paths.append(newpath)
+
     return paths
 
 # def get_all_routes(area_from_id,area_to_id):
@@ -30,9 +33,11 @@ def recurse(edge_list,active_bus,path_length,path = []):
     if active_bus != -1:
         path = path + [active_bus]
     if len(path) == path_length:
+        print "path appended to global path ",path
         global_path.append(path)
-        # print path
+        #print path
         return
+   
     for edge in edge_list:
         if active_bus == edge[0]:
             if len(path) < path_length:
@@ -41,11 +46,14 @@ def recurse(edge_list,active_bus,path_length,path = []):
 def print_all_paths():
     # print len(global_path)
     for path in global_path:
+        print "path ", path
         for i in range(len(path)):
                 start_stop = Stop.objects.filter(id = path[i].arriving_from_id)
                 end_stop = Stop.objects.filter(id = path[i].depature_at_id)
+                print path[i]
+                bus_obj = Bus.objects.filter (bus_number = path[i].bus_number_id)
                 print "from ",start_stop[0].area_name, " at ",path[i].arriving_time," to "\
-                    ,end_stop[0].area_name," by ",path[i].depature_time,"in ",path[i].slug
+                    ,end_stop[0].area_name," by ",path[i].depature_time,"in ",bus_obj[0].slug
                 # print str(k.slug)
                 print "price",path[i].fare
         print "----------------------------------------------"
@@ -54,15 +62,19 @@ def print_all_paths():
 
 def create_edge_list(active_buses):
     edge_list = []
+    print "\n\n"
     for i in range(1,len(active_buses)):
         start = active_buses[i]
         end = active_buses[i+1]
+        print "start",start,"end",end
         for st in start:
             for en in end:
+                # print st,en
                 if st.arriving_time <= en.depature_time:
                     edge_list.append((st,en))
     for bus in active_buses[1]:
         edge_list.append((-1,bus))
+    print "edge_list",edge_list
     recurse(edge_list,-1,len(active_buses))
     # print edge_list
 
@@ -73,54 +85,91 @@ def funk(path):
     for stop_no in range(len(path)-1):
         start_stop_nos = Stop.objects.filter(area_name = path[stop_no])
         end_stop_nos = Stop.objects.filter(area_name = path[stop_no+1])
+     #   print "start_stop",start_stop_nos , "end_stop",end_stop_nos
         active_buses[count] = []
         for i in start_stop_nos:
             for j in end_stop_nos:
-                bus_info_list = Bus.objects.filter(arriving_from_id=i,depature_at_id=j)
+       #         print i.id,j.id
+                bus_info_list = Bus_trip.objects.filter(arriving_from_id=i,depature_at_id=j)
+               # print "bus_info_list",bus_info_list
                 for k in bus_info_list:
                     active_buses[count].append(k)
+          #          print "k",k
                     # if k.arriving_time >= last_departure_time :
                     #     print "from ",i, " at ",k.depature_time," to ",j," by ",k.arriving_time
                     #     print str(k.slug)
                     #     print "price",k.fare
                     #     last_departure_time = k.depature_time
         count += 1
-    # print active_buses
+    print "\n\n\nactive_buses",active_buses
+    """ for buss in active_buses:
+            print buss """
     create_edge_list(active_buses)
 
 def search_bus(request,template_name ='bus/search_bus.html'):
+    print "\n\n\n"
     all_routes = {}
     page_title = 'Book a ticket'
     stop_map = {}
 
     if request.method == 'POST':
+        #print ("globalpath ", global_path)
         del global_path[:]
+
         post_data = request.POST.copy()
         area_from_id = post_data.get('area_from_id')
         area_to_id = post_data.get('area_to_id')
-        print area_from_id,area_to_id
+        print "from_area_id",area_from_id,"to_area_id ",area_to_id
+
+        #exceptions
         if area_from_id == '1' and area_to_id == '1':
             print "dfsfsd"
             area_from_id = 2
             area_to_id = 1
+
+        #populating stop names    
         start_area = Stop.objects.filter(id = area_from_id)
         start_area_name = str(start_area[0].area_name)
         stop_area = Stop.objects.filter(id = area_to_id)
         stop_area_name = str(stop_area[0].area_name)
+        print "start_area",start_area_name , "stop_area",stop_area_name
+
+        #retrived all buses
         route_dict = {}
-        bus_info_list = Bus.objects.filter(arriving_from_id=area_from_id,depature_at_id=area_to_id)
-        all_busses = Bus.objects.all()
+        bus_info_list = Bus_trip.objects.filter(arriving_from_id=area_from_id,depature_at_id=area_to_id)
+        #print "bus_info_list",bus_info_list
+        all_busses = Bus_trip.objects.all()
+        #print "all_busses",all_busses
+
         for bus in all_busses :
             arriving_from = Stop.objects.filter(id = int(bus.arriving_from_id))
             departing_at = Stop.objects.filter(id = int(bus.depature_at_id))
+
+         #   print "Bus id",bus.id,"arriving_from",arriving_from[0].area_name ,"departing_at",departing_at[0].area_name 
+
             stop_map[int(bus.arriving_from_id)] = arriving_from[0].area_name
             stop_map[int(bus.depature_at_id)] = departing_at[0].area_name
+
             if arriving_from[0].area_name in route_dict :
                 route_dict[arriving_from[0].area_name].append(str(departing_at[0].area_name))
             else :
                 route_dict[arriving_from[0].area_name] = [str(departing_at[0].area_name)]
+
+       ### print "\n\n\n\n Stop Map \n", stop_map
+        print " \nadj list \n"
+        for keys in route_dict :
+            print keys,route_dict[keys]
+
+        ### Basically DFS call
         paths = search_route(route_dict,start_area_name,stop_area_name)
+        print "all paths "
+        for path in paths :
+            print path
+
         unique_paths = [list(x) for x in set(tuple(x) for x in paths)]
+        print "unique_paths"
+        for path in unique_paths:
+            print path
         for path in unique_paths:
             print "new_path"
             funk(path)
@@ -157,9 +206,12 @@ def search_bus(request,template_name ='bus/search_bus.html'):
                     temp_row.depature_at_id = copy.copy(i.depature_at_id)
                     temp_row.fare += i.fare
                 else :
-                    temp_path.append(temp_row)
+                    bus_obj = Bus.objects.filter(bus_number = temp_row.bus_number_id)
+                    temp_path.append((bus_obj[0],temp_row))
                     temp_row = copy.copy(i)
-            temp_path.append(temp_row)
+
+
+            temp_path.append((bus_obj[0],temp_row))
             final_global_path.append(temp_path)
             # for j in temp_path:
             #     print "from ", j.arriving_from_id

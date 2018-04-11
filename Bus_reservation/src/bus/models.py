@@ -1,4 +1,6 @@
 from django.db import models
+# from .models import Bus
+
 # Create your models here.
 # class Stop(models.Model):
 #     area_name = models.CharField(max_length=50)
@@ -59,15 +61,10 @@ class Bus(models.Model):
     BUS_TYPES = ((AC,'AC Bus'),
                       (NON_AC,'Non AC bus'),)
 
-    bus_number = models.IntegerField(default=50)
+    bus_number = models.IntegerField(default=50, primary_key = True)
     slug = models.SlugField(max_length=255,unique=True)
     # bus_description = models.TextField()
-    type = models.CharField(choices=BUS_TYPES,default=AC,max_length=10)
-    arriving_time = models.TimeField()
-    depature_time = models.TimeField()
-    arriving_from = models.ForeignKey(Stop,unique=False,related_name="pickuparea")
-    depature_at = models.ForeignKey(Stop,unique=False,related_name="droparea")
-    fare = models.DecimalField(max_digits=9,decimal_places=2)
+    type = models.CharField(choices=BUS_TYPES,default=AC,max_length=10)    
     no_of_seats = models.IntegerField(default=10)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -78,6 +75,20 @@ class Bus(models.Model):
         ordering=['-created_at']
     def __str__(self):
         return str(self.bus_number)
+
+
+class Bus_trip(models.Model):
+    bus_number = models.ForeignKey(Bus,on_delete=models.CASCADE)
+    arriving_time = models.TimeField()
+    depature_time = models.TimeField()
+    arriving_from = models.ForeignKey(Stop,unique=False,related_name="pickuparea")
+    depature_at = models.ForeignKey(Stop,unique=False,related_name="droparea")
+    fare = models.DecimalField(max_digits=9,decimal_places=2)
+    class Meta:
+        db_table='Bus_trip'
+ #       ordering=['-created_at']
+    def __str__(self):
+        return str(self.id)
 #
 # class RouteTable(model.Model):
 #     route_id = models.CharField(max_length=50)
