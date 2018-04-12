@@ -62,16 +62,16 @@ def print_all_paths():
 
 def create_edge_list(active_buses):
     edge_list = []
-    print "\n\n"
+    print "\n\n Create List "
     for i in range(1,len(active_buses)):
         start = active_buses[i]
         end = active_buses[i+1]
         print "start",start,"end",end
         for st in start:
             for en in end:
-                # print st,en
-                if st.arriving_time <= en.depature_time:
-                    edge_list.append((st,en))
+                print st,en , st.arriving_time , en.depature_time
+                # if st.arriving_time <= en.depature_time:
+                edge_list.append((st,en))
     for bus in active_buses[1]:
         edge_list.append((-1,bus))
     print "edge_list",edge_list
@@ -199,6 +199,7 @@ def search_bus(request,template_name ='bus/search_bus.html'):
             temp_path = []
             temp_row = copy.copy(path[0])
             temp_row.fare = 0
+            flag = ''
             for i in path :
                 # print i.bus_number
                 if i.bus_number == temp_row.bus_number :
@@ -207,11 +208,15 @@ def search_bus(request,template_name ='bus/search_bus.html'):
                     temp_row.fare += i.fare
                 else :
                     bus_obj = Bus.objects.filter(bus_number = temp_row.bus_number_id)
-                    temp_path.append((bus_obj[0],temp_row))
+                    temp_path.append((bus_obj[0],temp_row,flag))
+                    flag = ''
+                    temp = copy.copy(i)
+                    if temp_row.arriving_time > temp.depature_time:
+                        flag = 'Next Day'
                     temp_row = copy.copy(i)
 
-
-            temp_path.append((bus_obj[0],temp_row))
+            bus_obj = Bus.objects.filter(bus_number = temp_row.bus_number_id)
+            temp_path.append((bus_obj[0],temp_row,flag))
             final_global_path.append(temp_path)
             # for j in temp_path:
             #     print "from ", j.arriving_from_id
