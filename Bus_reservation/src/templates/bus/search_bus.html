@@ -34,7 +34,7 @@
                {%if final_global_path %}
                {%for path in final_global_path%}
                <br><p>ROUTE OPTION</p>
-               {%for bus_obj,bus_info,flag in path %}
+               {%for bus_obj,bus_info in path %}
 						  <table class="table">
 								   <thead>
 								      <tr>
@@ -75,8 +75,7 @@
 								        <td>{{bus_obj.type}}</td>
 								        <td>Rs {{bus_info.fare|floatformat}}/Per person</td>
 								        <td>
-
-								       	    Depart: {{flag}} {{bus_info.depature_time}}<br/>
+								       	    Depart: {{bus_info.depature_time}}<br/>
 								        	Arrive : {{bus_info.arriving_time}}
 
 								        </td>
